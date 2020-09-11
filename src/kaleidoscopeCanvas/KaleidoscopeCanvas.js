@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { drawPolygonCanvas } from "../functions/drawPolygons";
 
-const KaleidoscopeCanvas = ({ srcImg, frameNumber }) => {
+const KaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
   const canvasRef = React.useRef(null);
 
   useEffect(() => {
     if (!canvasRef || !canvasRef.current || !srcImg) return;
 
-    const numSegments = 6;
-    const useSplitSegments = false;
+    const { numSegments, useSplitSegments } = settings;
 
     const screenCanvas = canvasRef.current;
     const kaleidCanvas = drawPolygonCanvas(
@@ -24,12 +23,7 @@ const KaleidoscopeCanvas = ({ srcImg, frameNumber }) => {
     ctx.drawImage(kaleidCanvas, 0, 0);
   }, [srcImg, frameNumber]);
 
-  return (
-    <div>
-      <h1>KaleidoscopeCanvas</h1>
-      <canvas ref={canvasRef} style={{ display: "block" }} />
-    </div>
-  );
+  return <canvas ref={canvasRef} style={{ display: "block" }} />;
 };
 
 export default KaleidoscopeCanvas;

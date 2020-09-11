@@ -16,12 +16,6 @@ const TiledKaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
       xOffset,
     } = settings;
 
-    // const numSegments = 6;
-    // const useSplitSegments = false;
-    // const polyHeight = 400;
-    // const yOffset = 0;
-    // const xOffset = 0;
-
     const screenCanvas = canvasRef.current;
     const kaleidCanvas = drawPolygonCanvas(
       srcImg,
@@ -52,12 +46,7 @@ const TiledKaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
     }
   }, [srcImg, frameNumber]);
 
-  return (
-    <div>
-      <h1>KaleidoscopeCanvas</h1>
-      <canvas ref={canvasRef} style={{ display: "block" }} />
-    </div>
-  );
+  return <canvas ref={canvasRef} style={{ display: "block" }} />;
 };
 
 export default TiledKaleidoscopeCanvas;
