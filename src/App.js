@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import "./styles.css";
 import { WebcamCapture } from "./WebcamCapture";
-// import { useLocalStorage } from "./hooks/useLocalStorage";
-// import { useKeyPress } from "./hooks/useKeyPress";
 
 const maxPolyHeight = 960;
 const minPolyHeight = 50;
@@ -27,6 +25,15 @@ export default function App() {
 
   const onXOffsetSliderChange = (e) => {
     setXOffset(parseInt(e.target.value));
+  };
+
+  const settings = {
+    inTileMode: true,
+    numSegments: 6,
+    useSplitSegments: true,
+    polyHeight,
+    yOffset,
+    xOffset,
   };
 
   return (
@@ -69,14 +76,7 @@ export default function App() {
         </div>
       )}
 
-      <WebcamCapture
-        onClick={onCanvasClick}
-        numSegments={6}
-        useSplitSegments={true}
-        polyHeight={polyHeight}
-        yOffset={yOffset}
-        xOffset={xOffset}
-      />
+      <WebcamCapture onClick={onCanvasClick} {...settings} />
     </div>
   );
 }

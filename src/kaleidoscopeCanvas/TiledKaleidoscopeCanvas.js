@@ -1,15 +1,26 @@
-import React from "react";
-import { drawPolygonCanvas } from "./functions/drawPolygons";
-import { drawTiledHexagonCanvas } from "./functions/drawTiledHexagons";
+import React, { useEffect } from "react";
+import { drawPolygonCanvas } from "../functions/drawPolygons";
+import { drawTiledHexagonCanvas } from "../functions/drawTiledHexagons";
 
-const TiledKaleidoscopeCanvas = ({ srcImg, frameNumber }) => {
+const TiledKaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
   const canvasRef = React.useRef(null);
 
   useEffect(() => {
     if (!canvasRef || !canvasRef.current || !srcImg) return;
 
-    const numSegments = 6;
-    const useSplitSegments = false;
+    const {
+      numSegments,
+      useSplitSegments,
+      polyHeight,
+      yOffset,
+      xOffset,
+    } = settings;
+
+    // const numSegments = 6;
+    // const useSplitSegments = false;
+    // const polyHeight = 400;
+    // const yOffset = 0;
+    // const xOffset = 0;
 
     const screenCanvas = canvasRef.current;
     const kaleidCanvas = drawPolygonCanvas(
