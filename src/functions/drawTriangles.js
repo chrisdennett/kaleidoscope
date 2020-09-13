@@ -16,19 +16,18 @@ export function drawTriangleCanvas(img, triW, triH) {
   ctx.lineTo(halfTriWidth, triH);
   ctx.clip();
 
+  const startXFrac = 0;
+  const startYFrac = 0;
+
+  const maxStartX = img.width - triW;
+  const maxStartY = img.height - triH;
+  const startX = startXFrac * maxStartX;
+  const startY = startYFrac * maxStartY;
+
   // move image so centerX of webcam is in the centerX of triangle
-  const imgX = (img.width - triW) / 2;
-  ctx.drawImage(
-    img,
-    imgX,
-    0,
-    img.width,
-    img.height,
-    0,
-    0,
-    img.width,
-    img.height
-  );
+  // const imgX = (img.width - triW) / 2;
+
+  ctx.drawImage(img, startX, startY, triW, triH, 0, 0, triW, triH);
 
   return outCanvas;
 }

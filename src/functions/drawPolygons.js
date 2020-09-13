@@ -1,10 +1,12 @@
 import { drawSplitTriangleCanvas, drawTriangleCanvas } from "./drawTriangles";
 
-export function drawPolygonCanvas(img, numSegments, useSplitSegments) {
-  const outCanvas = document.createElement("canvas");
-
-  const angle = 360 / numSegments;
-  const segHeight = img.height;
+export const createTriangleCanvas = (
+  img,
+  numSegments,
+  useSplitSegments,
+  heightFrac
+) => {
+  const segHeight = img.height * heightFrac;
 
   const halfSideLength = segHeight * Math.tan(Math.PI / numSegments);
   const sideLength = halfSideLength * 2;
@@ -12,6 +14,28 @@ export function drawPolygonCanvas(img, numSegments, useSplitSegments) {
   const triCanvas = useSplitSegments
     ? drawSplitTriangleCanvas(img, sideLength, segHeight)
     : drawTriangleCanvas(img, sideLength, segHeight);
+
+  return triCanvas;
+};
+
+export function drawPolygonCanvas(
+  img,
+  numSegments,
+  useSplitSegments,
+  heightFrac
+) {
+  const outCanvas = document.createElement("canvas");
+
+  const angle = 360 / numSegments;
+  const segHeight = img.height;
+  const halfSideLength = segHeight * Math.tan(Math.PI / numSegments);
+
+  const triCanvas = createTriangleCanvas(
+    img,
+    numSegments,
+    useSplitSegments,
+    heightFrac
+  );
 
   const ctx = outCanvas.getContext("2d");
   // if half number of segments is an odd number the pointy bits

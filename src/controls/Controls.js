@@ -4,7 +4,7 @@ const maxPolyHeight = 960;
 const minPolyHeight = 50;
 
 const Controls = ({ settings, setSettings }) => {
-  const { numSegments, polyHeight, yOffset, xOffset } = settings;
+  const { numSegments, polyHeight, yOffset, xOffset, heightFrac } = settings;
 
   const onControlUpdate = (key, newValue) => {
     setSettings({ ...settings, [key]: newValue });
@@ -33,6 +33,9 @@ const Controls = ({ settings, setSettings }) => {
   const toggleUseSplitSegments = () => {
     onControlUpdate("useSplitSegments", !settings.useSplitSegments);
   };
+  const onHeightFracSliderChange = (e) => {
+    onControlUpdate("heightFrac", e.target.value);
+  };
 
   return (
     <div>
@@ -48,7 +51,18 @@ const Controls = ({ settings, setSettings }) => {
         <div>
           <input
             type="range"
-            min={4}
+            min={0.5}
+            max={1}
+            step="0.05"
+            value={heightFrac}
+            onChange={onHeightFracSliderChange}
+          />
+          {heightFrac}
+        </div>
+        <div>
+          <input
+            type="range"
+            min={6}
             max={100}
             step="2"
             value={numSegments}

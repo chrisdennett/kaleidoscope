@@ -4,15 +4,16 @@ import Controls from "./controls/Controls";
 import { useDebounce } from "./hooks/useDebounce";
 import "./styles.css";
 import TiledKaleidoscopeCanvas from "./kaleidoscopeCanvas/TiledKaleidoscopeCanvas";
-import KaleidoscopeCanvas from "./kaleidoscopeCanvas/KaleidoscopeCanvas";
+import AnimatedKaleidoscope from "./kaleidoscopeCanvas/AnimatedKaleidoscope";
 
 const defaultSettings = {
   polyHeight: 500,
   numSegments: 6,
   inTileMode: false,
   useSplitSegments: false,
-  xOffset: 150,
+  xOffset: 681,
   yOffset: 90,
+  heightFrac: 0.5,
 };
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
   return (
     <div>
       <ImageInputSelector
+        srcImg={srcImg}
         setSrcImg={setSrcImg}
         setFrameNumber={setFrameNumber}
       />
@@ -44,7 +46,7 @@ export default function App() {
         />
       )}
       {!inTileMode && (
-        <KaleidoscopeCanvas
+        <AnimatedKaleidoscope
           srcImg={srcImg}
           frameNumber={frameNumber}
           settings={debouncedSettings}

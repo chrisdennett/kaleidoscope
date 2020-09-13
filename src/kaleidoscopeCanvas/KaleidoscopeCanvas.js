@@ -7,13 +7,14 @@ const KaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
   useEffect(() => {
     if (!canvasRef || !canvasRef.current || !srcImg) return;
 
-    const { numSegments, useSplitSegments, polyHeight } = settings;
+    const { numSegments, useSplitSegments, polyHeight, heightFrac } = settings;
 
     const screenCanvas = canvasRef.current;
     const kaleidCanvas = drawPolygonCanvas(
       srcImg,
       numSegments,
-      useSplitSegments
+      useSplitSegments,
+      heightFrac
     );
 
     const heightToWidthRatio = kaleidCanvas.width / kaleidCanvas.height;

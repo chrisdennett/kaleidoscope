@@ -10,8 +10,6 @@ const videoConstraints = {
 
 export const WebcamCapture = ({ setSrcImg, setFrameNumber }) => {
   const [mediaReady, setMediaReady] = React.useState(false);
-  // const [frameNumber, setFrameNumber] = React.useState(0);
-  // const [srcImg, setSrcImg] = React.useState(null);
   const webcamRef = React.useRef(null);
 
   useAnimationFrame(() => {
@@ -23,6 +21,7 @@ export const WebcamCapture = ({ setSrcImg, setFrameNumber }) => {
 
   return (
     <div>
+      <h1>Webcam</h1>
       {!mediaReady && <h1>LOOKING FOR WEBCAM... PLEASE HOLD</h1>}
 
       {/* HIDDEN */}
