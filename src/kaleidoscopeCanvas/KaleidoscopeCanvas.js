@@ -46,7 +46,7 @@ const KaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
 
   return (
     <div style={style}>
-      <canvas ref={canvasRef} />;
+      <canvas ref={canvasRef} />
     </div>
   );
 };
