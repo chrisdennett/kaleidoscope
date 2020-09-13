@@ -44,7 +44,7 @@ const TiledKaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
         );
       }
     }
-  }, [srcImg, frameNumber]);
+  }, [srcImg, frameNumber, settings]);
 
   return <canvas ref={canvasRef} style={{ display: "block" }} />;
 };

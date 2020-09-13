@@ -7,7 +7,7 @@ const minPolyHeight = 50;
 
 export default function App() {
   const [showControls, setShowControls] = useState(true);
-  const [polyHeight, setPolyHeight] = useState(960);
+  const [polyHeight, setPolyHeight] = useState(500);
   const [numSegments, setNumSegments] = useState(6);
   const [inTileMode, setInTileMode] = useState(false);
   const [useSplitSegments, setUseSplitSegments] = useState(false);

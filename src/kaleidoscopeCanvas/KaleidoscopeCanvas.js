@@ -7,7 +7,7 @@ const KaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
   useEffect(() => {
     if (!canvasRef || !canvasRef.current || !srcImg) return;
 
-    const { numSegments, useSplitSegments } = settings;
+    const { numSegments, useSplitSegments, polyHeight } = settings;
 
     const screenCanvas = canvasRef.current;
     const kaleidCanvas = drawPolygonCanvas(
@@ -16,12 +16,25 @@ const KaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
       useSplitSegments
     );
 
-    screenCanvas.width = kaleidCanvas.width;
-    screenCanvas.height = kaleidCanvas.height;
+    const heightToWidthRatio = kaleidCanvas.width / kaleidCanvas.height;
+    const polyWidth = polyHeight * heightToWidthRatio;
+
+    screenCanvas.width = polyWidth;
+    screenCanvas.height = polyHeight;
 
     const ctx = screenCanvas.getContext("2d");
-    ctx.drawImage(kaleidCanvas, 0, 0);
-  }, [srcImg, frameNumber]);
+    ctx.drawImage(
+      kaleidCanvas,
+      0,
+      0,
+      kaleidCanvas.width,
+      kaleidCanvas.height,
+      0,
+      0,
+      screenCanvas.width,
+      screenCanvas.height
+    );
+  }, [srcImg, frameNumber, settings]);
 
   return <canvas ref={canvasRef} style={{ display: "block" }} />;
 };

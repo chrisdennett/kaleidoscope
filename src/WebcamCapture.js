@@ -15,6 +15,7 @@ export const WebcamCapture = ({ onClick, ...settings }) => {
   const [frameNumber, setFrameNumber] = React.useState(0);
   const [srcImg, setSrcImg] = React.useState(null);
   const webcamRef = React.useRef(null);
+
   useAnimationFrame(() => {
     if (!webcamRef || !webcamRef.current) return;
     const frameCanvas = webcamRef.current.getCanvas();
