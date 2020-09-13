@@ -36,7 +36,19 @@ const KaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
     );
   }, [srcImg, frameNumber, settings]);
 
-  return <canvas ref={canvasRef} style={{ display: "block" }} />;
+  let style = {
+    display: "block",
+    position: "fixed",
+    zIndex: -1,
+    left: settings.xOffset + "px",
+    top: settings.yOffset + "px",
+  };
+
+  return (
+    <div style={style}>
+      <canvas ref={canvasRef} />;
+    </div>
+  );
 };
 
 export default KaleidoscopeCanvas;

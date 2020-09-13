@@ -28,8 +28,10 @@ const TiledKaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
 
     const rectCanvas = drawTiledHexagonCanvas(kaleidCanvas, polyHeight);
     // tile
-    const totalHeight = yOffset + window.innerHeight;
-    const totalWidth = xOffset + window.innerWidth;
+    const totalHeight = window.innerHeight;
+    // const totalHeight = yOffset + window.innerHeight;
+    const totalWidth = window.innerWidth;
+    // const totalWidth = xOffset + window.innerWidth;
 
     const ctx = screenCanvas.getContext("2d");
     const cols = Math.ceil(totalWidth / rectCanvas.width);
@@ -44,7 +46,9 @@ const TiledKaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
         );
       }
     }
-  }, [srcImg, frameNumber, settings]);
+
+    // eslint-disable-next-line
+  }, [srcImg, frameNumber]);
 
   return <canvas ref={canvasRef} style={{ display: "block" }} />;
 };
