@@ -8,6 +8,7 @@ export function drawTriangleCanvas(img, triW, triH) {
   outCanvas.width = Math.ceil(triW + buffer);
   outCanvas.height = triH;
 
+  // draw clip path
   const ctx = outCanvas.getContext("2d");
   ctx.beginPath();
   ctx.moveTo(0, 0);
