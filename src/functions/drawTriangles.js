@@ -1,4 +1,4 @@
-export function drawTriangleCanvas(img, triW, triH) {
+export function drawTriangleCanvas(img, triW, triH, bounds) {
   const outCanvas = document.createElement("canvas");
   const halfTriWidth = triW / 2;
 
@@ -17,13 +17,8 @@ export function drawTriangleCanvas(img, triW, triH) {
   ctx.lineTo(halfTriWidth, triH);
   ctx.clip();
 
-  const startXFrac = 0;
-  const startYFrac = 0;
-
-  const maxStartX = img.width - triW;
-  const maxStartY = img.height - triH;
-  const startX = startXFrac * maxStartX;
-  const startY = startYFrac * maxStartY;
+  const startX = bounds.x;
+  const startY = bounds.y;
 
   // move image so centerX of webcam is in the centerX of triangle
   // const imgX = (img.width - triW) / 2;

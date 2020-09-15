@@ -21,15 +21,14 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
       return;
 
     const { numSegments, useSplitSegments, heightFrac } = settings;
-    const triangleData = getTriangleData(srcImg, numSegments, heightFrac);
+    const triangleData = getTriangleData(srcImg, settings);
     // source canvas showing orig image
     drawSrcCanvasToScreen(srcImg, srcCanvasRef.current, triangleData);
     // triangle canvas showing just the triangle
     const triCanvas = createTriangleCanvas(
       srcImg,
       useSplitSegments,
-      triangleData.height,
-      triangleData.sideLength
+      triangleData
     );
     drawTriangleCanvasToScreen(triCanvas, triCanvasRef.current, triangleData);
     // full polygon canvas

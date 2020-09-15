@@ -13,7 +13,9 @@ const defaultSettings = {
   useSplitSegments: false,
   xOffset: 681,
   yOffset: 90,
-  heightFrac: 1,
+  heightFrac: 0.5,
+  xFrac: 0,
+  yFrac: 0,
 };
 
 export default function App() {
