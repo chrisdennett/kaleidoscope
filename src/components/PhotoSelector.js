@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+const maxOutputCanvasSize = 1000;
+
 const PhotoSelector = ({ onPhotoSelected, children }) => {
   const onFileSelect = (e) => {
     e.preventDefault();
@@ -13,9 +15,15 @@ const PhotoSelector = ({ onPhotoSelected, children }) => {
     }
   };
 
+  // this ensures onChange still fires if same file selected
+  const onInputClick = (e) => {
+    e.target.value = "";
+  };
+
   return (
     <Holder>
       <input
+        onClick={onInputClick}
         onChange={onFileSelect}
         multiple={false}
         capture="environment"
@@ -25,11 +33,7 @@ const PhotoSelector = ({ onPhotoSelected, children }) => {
         id={"photo-selector"}
       />
 
-      <label htmlFor={"photo-selector"}>
-        <button label="add image" icon="add_a_photo">
-          ADD PICTURE
-        </button>
-      </label>
+      <label htmlFor={"photo-selector"}>{children}</label>
     </Holder>
   );
 };
@@ -55,15 +59,10 @@ const Holder = styled.div`
 
   button {
     pointer-events: none;
-    padding: 15px 10px;
-    border: none;
-    border-radius: 5px;
   }
 `;
 
 const createCanvasFromFile = (file, callback) => {
-  const maxOutputCanvasSize = 1000;
-
   GetImage(file, (sourceImg, imgOrientation) => {
     const maxWidthCanvas = createMaxSizeCanvas(
       sourceImg,

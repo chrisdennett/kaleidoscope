@@ -10,6 +10,7 @@ const ImageInputSelector = ({ setSrcImg, setFrameNumber }) => {
   const imgName = "tizziewizie.jpg";
 
   useEffect(() => {
+    console.log("currentInput: ", currentInput);
     if (currentInput === "sample") {
       const image = new Image();
       image.crossOrigin = "Anonymous";
@@ -23,13 +24,20 @@ const ImageInputSelector = ({ setSrcImg, setFrameNumber }) => {
     // eslint-disable-next-line
   }, [imgName, currentInput]);
 
-  const onPhotoSelected = (photo) => setSrcImg(photo);
+  const onPhotoSelected = (photo) => {
+    setCurrentInput("userPhoto");
+    setSrcImg(photo);
+  };
+  const onSelectWebcam = () => setCurrentInput("webcam");
+  const onSelectSample = () => setCurrentInput("sample");
 
   return (
     <div>
-      <button onClick={() => setCurrentInput("webcam")}>webcam</button>
-      <button onClick={() => setCurrentInput("sample")}>sample</button>
-      <PhotoSelector onPhotoSelected={onPhotoSelected} />
+      <button onClick={onSelectWebcam}>webcam</button>
+      <button onClick={onSelectSample}>sample</button>
+      <PhotoSelector onPhotoSelected={onPhotoSelected}>
+        <button>ADD PICTURE</button>
+      </PhotoSelector>
       {currentInput === "webcam" && (
         <WebcamCapture
           setSrcImg={setSrcImg}
