@@ -76,7 +76,7 @@ export default AnimatedKaleidoscope;
 const Holder = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   width: 100vw;
   max-height: 300px;
   margin-bottom: 10px;
@@ -84,9 +84,6 @@ const Holder = styled.div`
 
 const TiledCanvasHolder = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  /* width: 100%; */
 
   canvas {
     display: block;
@@ -131,7 +128,7 @@ const drawTriangleCanvasToScreen = (triCanvas, screenCanvas, triangleData) => {
   const ctx = screenCanvas.getContext("2d");
   ctx.drawImage(triCanvas, 0, 0);
 
-  const offset = 2;
+  const offset = 0;
   const rightX = triangleData.useSplitSegments
     ? triCanvas.width / 2 - offset
     : triCanvas.width - offset;

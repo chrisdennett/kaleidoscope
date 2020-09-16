@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import ImageInputSelector from "../components/ImageInputSelector";
 
 const Controls = ({
@@ -17,8 +18,8 @@ const Controls = ({
   };
 
   return (
-    <div>
-      <div style={{ position: "fixed" }}>
+    <Holder>
+      <Inner>
         <ImageInputSelector
           srcImg={srcImg}
           setSrcImg={setSrcImg}
@@ -30,16 +31,6 @@ const Controls = ({
             Toggle split segments
           </button>
         </div>
-
-        {/* <Slider
-          label={"Sides: "}
-          min={6}
-          max={50}
-          step={2}
-          propertyName={"numSegments"}
-          setSettings={setSettings}
-          settings={settings}
-        /> */}
 
         <Slider
           label={"Height: "}
@@ -70,12 +61,29 @@ const Controls = ({
           setSettings={setSettings}
           settings={settings}
         />
-      </div>
-    </div>
+      </Inner>
+    </Holder>
   );
 };
 
 export default Controls;
+
+const Inner = styled.div`
+  padding: 20px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+`;
+
+const Holder = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  right: 0;
+  top: 0;
+`;
 
 const Slider = ({
   min,
@@ -93,7 +101,7 @@ const Slider = ({
   };
 
   return (
-    <div>
+    <SliderHolder>
       {label}
       <input
         type="range"
@@ -104,6 +112,10 @@ const Slider = ({
         onChange={onSliderChange}
       />
       {value}
-    </div>
+    </SliderHolder>
   );
 };
+
+const SliderHolder = styled.div`
+  margin: 5px 0;
+`;
