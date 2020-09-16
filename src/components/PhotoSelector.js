@@ -43,6 +43,7 @@ export default PhotoSelector;
 const Holder = styled.div`
   display: inline-block;
   position: relative;
+
   input {
     width: 0.1px;
     height: 0.1px;

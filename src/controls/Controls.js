@@ -9,6 +9,8 @@ const Controls = ({
   setSrcImg,
   setFrameNumber,
 }) => {
+  const [settingsShowing, setSettingsShowing] = React.useState(true);
+
   const onControlUpdate = (key, newValue) => {
     setSettings({ ...settings, [key]: newValue });
   };
@@ -17,72 +19,114 @@ const Controls = ({
     onControlUpdate("useSplitSegments", !settings.useSplitSegments);
   };
 
+  const onShowSettingsClick = () => setSettingsShowing(true);
+  const onHideSettingsClick = () => setSettingsShowing(false);
+
   return (
-    <Holder>
-      <Inner>
+    <div>
+      {!settingsShowing && (
+        <SettingsOnButton onClick={onShowSettingsClick}>
+          SHOW SETTINGS
+        </SettingsOnButton>
+      )}
+
+      <Inner settingsShowing={settingsShowing}>
+        {settingsShowing && (
+          <SettingsOffButton onClick={onHideSettingsClick}>
+            HIDE SETTINGS
+          </SettingsOffButton>
+        )}
+
         <ImageInputSelector
           srcImg={srcImg}
           setSrcImg={setSrcImg}
           setFrameNumber={setFrameNumber}
         />
 
-        <div>
-          <button onClick={toggleUseSplitSegments}>
-            Toggle split segments
-          </button>
-        </div>
+        <SettingsControls>
+          <ControlHolder>
+            <span>Split Triangle: </span>
+            <ToggleButton onClick={toggleUseSplitSegments}>
+              {settings.useSplitSegments ? "TURN OFF" : "TURN ON"}
+            </ToggleButton>
+          </ControlHolder>
 
-        <Slider
-          label={"Height: "}
-          min={0.2}
-          max={1}
-          step={0.01}
-          propertyName={"heightFrac"}
-          setSettings={setSettings}
-          settings={settings}
-        />
+          <Slider
+            label={"Size: "}
+            min={0.1}
+            max={1}
+            step={0.01}
+            propertyName={"heightFrac"}
+            setSettings={setSettings}
+            settings={settings}
+          />
 
-        <Slider
-          label={"X Pos: "}
-          min={0}
-          max={1}
-          step={0.01}
-          propertyName={"xFrac"}
-          setSettings={setSettings}
-          settings={settings}
-        />
+          <Slider
+            label={"X: "}
+            min={0}
+            max={1}
+            step={0.01}
+            propertyName={"xFrac"}
+            setSettings={setSettings}
+            settings={settings}
+          />
 
-        <Slider
-          label={"Y Pos: "}
-          min={0}
-          max={1}
-          step={0.01}
-          propertyName={"yFrac"}
-          setSettings={setSettings}
-          settings={settings}
-        />
+          <Slider
+            label={"Y: "}
+            min={0}
+            max={1}
+            step={0.01}
+            propertyName={"yFrac"}
+            setSettings={setSettings}
+            settings={settings}
+          />
+        </SettingsControls>
       </Inner>
-    </Holder>
+    </div>
   );
 };
 
 export default Controls;
 
+const SettingsOffButton = styled.button`
+  background: black;
+  color: white;
+  padding: 10px;
+  border: none;
+  margin-bottom: 20px;
+  font-weight: bold;
+`;
+
+const SettingsOnButton = styled.button`
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  padding: 10px 80px;
+  background: white;
+  border: none;
+  font-weight: bold;
+`;
+
 const Inner = styled.div`
-  padding: 20px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  left: ${(props) => (props.settingsShowing ? "" : "-1000px")};
+  right: ${(props) => (props.settingsShowing ? "0px" : "")};
+  top: 0;
+  padding: 5px 20px 20px 20px;
+  border-radius: 0 0 10px 10px;
+  background: rgba(255, 255, 255, 0.9);
+  font-weight: bold;
+  color: black;
   display: flex;
   flex-direction: column;
 `;
 
-const Holder = styled.div`
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  left: 0;
-  right: 0;
-  top: 0;
+const ToggleButton = styled.button`
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: white;
+  border: solid black 2px;
+  font-weight: bold;
 `;
 
 const Slider = ({
@@ -101,7 +145,7 @@ const Slider = ({
   };
 
   return (
-    <SliderHolder>
+    <ControlHolder>
       {label}
       <input
         type="range"
@@ -112,10 +156,16 @@ const Slider = ({
         onChange={onSliderChange}
       />
       {value}
-    </SliderHolder>
+    </ControlHolder>
   );
 };
 
-const SliderHolder = styled.div`
-  margin: 5px 0;
+const SettingsControls = styled.div`
+  margin-top: 15px;
+`;
+
+const ControlHolder = styled.div`
+  margin: 8px 0;
+  text-transform: uppercase;
+  font-family: "Courier New", Courier, monospace;
 `;

@@ -76,7 +76,7 @@ export default AnimatedKaleidoscope;
 const Holder = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: left;
   width: 100vw;
   max-height: 300px;
   margin-bottom: 10px;
@@ -117,7 +117,8 @@ const drawSrcCanvasToScreen = (srcImg, screenCanvas, triangleData) => {
   ctx.lineTo(points[2].x, points[2].y);
   ctx.lineTo(points[0].x, points[0].y);
   ctx.strokeStyle = "rgb(255,0,0)";
-  ctx.lineWidth = 4;
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 16;
   ctx.stroke();
 };
 
@@ -128,7 +129,7 @@ const drawTriangleCanvasToScreen = (triCanvas, screenCanvas, triangleData) => {
   const ctx = screenCanvas.getContext("2d");
   ctx.drawImage(triCanvas, 0, 0);
 
-  const offset = 0;
+  const offset = 4;
   const rightX = triangleData.useSplitSegments
     ? triCanvas.width / 2 - offset
     : triCanvas.width - offset;
@@ -138,7 +139,8 @@ const drawTriangleCanvasToScreen = (triCanvas, screenCanvas, triangleData) => {
   ctx.lineTo(rightX, offset);
   ctx.lineTo(triCanvas.width / 2, triCanvas.height - offset);
   ctx.closePath();
-  ctx.lineWidth = 2;
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 8;
   ctx.strokeStyle = "red";
   ctx.stroke();
 };
@@ -155,13 +157,14 @@ const drawPolyCanvasToScreen = (polyCanvas, screenCanvas, triangleData) => {
 
   const rightX = useSplitSegments ? sideLength : halfSideLength + sideLength;
 
-  const offset = 0;
+  const offset = 9;
   ctx.beginPath();
   ctx.moveTo(halfSideLength, offset);
   ctx.lineTo(rightX, offset);
   ctx.lineTo(sideLength, height);
   ctx.closePath();
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 18;
+  ctx.lineJoin = "round";
   ctx.strokeStyle = "red";
   ctx.stroke();
 };

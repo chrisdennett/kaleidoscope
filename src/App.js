@@ -3,14 +3,15 @@ import Controls from "./controls/Controls";
 import { useDebounce } from "./hooks/useDebounce";
 import "./styles.css";
 import AnimatedKaleidoscope from "./kaleidoscopeCanvas/AnimatedKaleidoscope";
+import styled from "styled-components";
 
 const defaultSettings = {
   polyHeight: 500,
   numSegments: 6,
-  useSplitSegments: false,
+  useSplitSegments: true,
   xOffset: 681,
   yOffset: 90,
-  heightFrac: 0.5,
+  heightFrac: 0.34,
   xFrac: 0.5,
   yFrac: 0.5,
 };
@@ -23,7 +24,7 @@ export default function App() {
   const debouncedSettings = useDebounce(settings, 1);
 
   return (
-    <div>
+    <AppHolder>
       <Controls
         settings={settings}
         setSettings={setSettings}
@@ -36,6 +37,10 @@ export default function App() {
         frameNumber={frameNumber}
         settings={debouncedSettings}
       />
-    </div>
+    </AppHolder>
   );
 }
+
+const AppHolder = styled.div`
+  margin-top: 40px;
+`;
