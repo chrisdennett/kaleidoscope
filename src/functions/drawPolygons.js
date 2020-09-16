@@ -8,7 +8,7 @@ export const getTriangleData = (img, settings) => {
 
   let maxX = img.width - (useSplitSegments ? halfSideLength : sideLength);
   maxX -= 2; // seems to be needed to avoid a white edge
-  const maxY = img.height - height;
+  let maxY = img.height - height;
 
   const x1 = maxX * xFrac;
   const y1 = maxY * yFrac;
@@ -18,21 +18,34 @@ export const getTriangleData = (img, settings) => {
   const y3 = y1 + height;
 
   return {
-    height,
+    height: restrictNumber(height, 10, img.height),
     useSplitSegments,
-    sideLength,
+    sideLength: restrictNumber(sideLength, 10, img.width),
     bounds: {
-      x: x1,
-      y: y1,
-      w: useSplitSegments ? halfSideLength : sideLength,
-      h: height,
+      x: restrictNumber(x1),
+      y: restrictNumber(y1),
+      w: restrictNumber(useSplitSegments ? halfSideLength : sideLength),
+      h: restrictNumber(height),
     },
     points: [
-      { x: x1, y: y1 },
-      { x: useSplitSegments ? x2 - halfSideLength : x2, y: y2 },
-      { x: x3, y: y3 },
+      { x: restrictNumber(x1), y: restrictNumber(y1) },
+      {
+        x: useSplitSegments
+          ? restrictNumber(x2 - halfSideLength)
+          : restrictNumber(x2),
+        y: restrictNumber(y2),
+      },
+      { x: restrictNumber(x3), y: restrictNumber(y3) },
     ],
   };
+};
+
+const restrictNumber = (num, min = 0, max) => {
+  let out = Math.round(num);
+  if (min && out < min) out = min;
+  if (max && out > max) out = max;
+
+  return out;
 };
 
 export const createTriangleCanvas = (img, useSplitSegments, triangleData) => {

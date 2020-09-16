@@ -1,37 +1,23 @@
 import React, { useEffect } from "react";
-import { drawPolygonCanvas } from "../functions/drawPolygons";
 import { drawTiledHexagonCanvas } from "../functions/drawTiledHexagons";
 
-const TiledKaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
+const TiledKaleidoscopeCanvas = ({ kaleidCanvas, frameNumber, settings }) => {
   const canvasRef = React.useRef(null);
 
   useEffect(() => {
-    if (!canvasRef || !canvasRef.current || !srcImg) return;
-
-    const {
-      numSegments,
-      useSplitSegments,
-      polyHeight,
-      yOffset,
-      xOffset,
-    } = settings;
+    if (!canvasRef || !canvasRef.current || !kaleidCanvas) return;
 
     const screenCanvas = canvasRef.current;
-    const kaleidCanvas = drawPolygonCanvas(
-      srcImg,
-      numSegments,
-      useSplitSegments
-    );
-
     screenCanvas.width = window.innerWidth;
-    screenCanvas.height = window.innerHeight;
+    screenCanvas.height = 900;
 
-    const rectCanvas = drawTiledHexagonCanvas(kaleidCanvas, polyHeight);
+    const rectCanvas = drawTiledHexagonCanvas(
+      kaleidCanvas,
+      kaleidCanvas.height
+    );
     // tile
-    const totalHeight = window.innerHeight;
-    // const totalHeight = yOffset + window.innerHeight;
     const totalWidth = window.innerWidth;
-    // const totalWidth = xOffset + window.innerWidth;
+    const totalHeight = 900;
 
     const ctx = screenCanvas.getContext("2d");
     const cols = Math.ceil(totalWidth / rectCanvas.width);
@@ -41,14 +27,14 @@ const TiledKaleidoscopeCanvas = ({ srcImg, frameNumber, settings }) => {
       for (let r = 0; r < rows; r++) {
         ctx.drawImage(
           rectCanvas,
-          c * rectCanvas.width - 2 - xOffset,
-          r * rectCanvas.height - 2 - yOffset
+          c * rectCanvas.width - 2,
+          r * rectCanvas.height - 2
         );
       }
     }
 
     // eslint-disable-next-line
-  }, [srcImg, frameNumber]);
+  }, [kaleidCanvas, frameNumber]);
 
   return <canvas ref={canvasRef} style={{ display: "block" }} />;
 };

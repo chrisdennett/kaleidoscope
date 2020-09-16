@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import TiledKaleidoscopeCanvas from "../kaleidoscopeCanvas/TiledKaleidoscopeCanvas";
 import {
   createTriangleCanvas,
   drawPolygonCanvas,
@@ -9,6 +11,7 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
   const srcCanvasRef = React.useRef(null);
   const triCanvasRef = React.useRef(null);
   const polyCanvasRef = React.useRef(null);
+  const [kaleidCanvas, setKaleidCanvas] = useState(null);
 
   useEffect(() => {
     if (
@@ -22,7 +25,7 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
 
     const { numSegments, useSplitSegments } = settings;
     const triangleData = getTriangleData(srcImg, settings);
-    // source canvas showing orig image
+
     drawSrcCanvasToScreen(srcImg, srcCanvasRef.current, triangleData);
     // triangle canvas showing just the triangle
     const triCanvas = createTriangleCanvas(
@@ -38,19 +41,68 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
       triangleData.sideLength,
       numSegments
     );
+
+    setKaleidCanvas(polyCanvas);
+
     drawPolyCanvasToScreen(polyCanvas, polyCanvasRef.current);
   }, [srcImg, frameNumber, settings]);
 
   return (
-    <div>
-      <canvas ref={srcCanvasRef} />
-      <canvas ref={triCanvasRef} />
-      <canvas ref={polyCanvasRef} />
-    </div>
+    <>
+      <Holder>
+        <CanvasHolder>
+          <canvas ref={srcCanvasRef} style={{ flex: 2 }} />
+        </CanvasHolder>
+        <CanvasHolder>
+          <canvas ref={triCanvasRef} />
+        </CanvasHolder>
+        <CanvasHolder>
+          <canvas ref={polyCanvasRef} />
+        </CanvasHolder>
+      </Holder>
+      <TiledCanvasHolder>
+        <TiledKaleidoscopeCanvas
+          kaleidCanvas={kaleidCanvas}
+          frameNumber={frameNumber}
+          settings={settings}
+        />
+      </TiledCanvasHolder>
+    </>
   );
 };
 
 export default AnimatedKaleidoscope;
+
+const Holder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  max-height: 300px;
+`;
+
+const TiledCanvasHolder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 100%; */
+
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
+`;
+
+const CanvasHolder = styled.div`
+  max-height: 300px;
+
+  canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    max-height: 300px;
+  }
+`;
 
 const drawSrcCanvasToScreen = (srcImg, screenCanvas, triangleData) => {
   screenCanvas.width = srcImg.width;

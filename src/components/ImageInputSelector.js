@@ -10,7 +10,6 @@ const ImageInputSelector = ({ setSrcImg, setFrameNumber }) => {
   const imgName = "tizziewizie.jpg";
 
   useEffect(() => {
-    console.log("currentInput: ", currentInput);
     if (currentInput === "sample") {
       const image = new Image();
       image.crossOrigin = "Anonymous";
