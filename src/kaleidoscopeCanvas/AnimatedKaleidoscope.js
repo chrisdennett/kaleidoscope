@@ -44,7 +44,7 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
 
     setKaleidCanvas(polyCanvas);
 
-    drawPolyCanvasToScreen(polyCanvas, polyCanvasRef.current);
+    drawPolyCanvasToScreen(polyCanvas, polyCanvasRef.current, triangleData);
   }, [srcImg, frameNumber, settings]);
 
   return (
@@ -123,18 +123,47 @@ const drawSrcCanvasToScreen = (srcImg, screenCanvas, triangleData) => {
   ctx.stroke();
 };
 
-const drawTriangleCanvasToScreen = (triCanvas, screenCanvas) => {
+const drawTriangleCanvasToScreen = (triCanvas, screenCanvas, triangleData) => {
   screenCanvas.width = triCanvas.width;
   screenCanvas.height = triCanvas.height;
 
   const ctx = screenCanvas.getContext("2d");
   ctx.drawImage(triCanvas, 0, 0);
+
+  const offset = 2;
+  const rightX = triangleData.useSplitSegments
+    ? triCanvas.width / 2 - offset
+    : triCanvas.width - offset;
+
+  ctx.beginPath();
+  ctx.moveTo(offset, offset);
+  ctx.lineTo(rightX, offset);
+  ctx.lineTo(triCanvas.width / 2, triCanvas.height - offset);
+  ctx.closePath();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "red";
+  ctx.stroke();
 };
 
-const drawPolyCanvasToScreen = (polyCanvas, screenCanvas) => {
+const drawPolyCanvasToScreen = (polyCanvas, screenCanvas, triangleData) => {
   screenCanvas.width = polyCanvas.width;
   screenCanvas.height = polyCanvas.height;
 
   const ctx = screenCanvas.getContext("2d");
   ctx.drawImage(polyCanvas, 0, 0);
+
+  const { sideLength, height, useSplitSegments } = triangleData;
+  const halfSideLength = sideLength / 2;
+
+  const rightX = useSplitSegments ? sideLength : halfSideLength + sideLength;
+
+  const offset = 0;
+  ctx.beginPath();
+  ctx.moveTo(halfSideLength, offset);
+  ctx.lineTo(rightX, offset);
+  ctx.lineTo(sideLength, height);
+  ctx.closePath();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "red";
+  ctx.stroke();
 };

@@ -7,9 +7,11 @@ const TiledKaleidoscopeCanvas = ({ kaleidCanvas, frameNumber, settings }) => {
   useEffect(() => {
     if (!canvasRef || !canvasRef.current || !kaleidCanvas) return;
 
+    const canvasHeight = kaleidCanvas.height * 2;
+
     const screenCanvas = canvasRef.current;
     screenCanvas.width = window.innerWidth;
-    screenCanvas.height = 900;
+    screenCanvas.height = canvasHeight;
 
     const rectCanvas = drawTiledHexagonCanvas(
       kaleidCanvas,
@@ -17,7 +19,7 @@ const TiledKaleidoscopeCanvas = ({ kaleidCanvas, frameNumber, settings }) => {
     );
     // tile
     const totalWidth = window.innerWidth;
-    const totalHeight = 900;
+    const totalHeight = canvasHeight;
 
     const ctx = screenCanvas.getContext("2d");
     const cols = Math.ceil(totalWidth / rectCanvas.width);

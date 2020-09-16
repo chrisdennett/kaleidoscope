@@ -10,6 +10,7 @@ export function drawTriangleCanvas(img, bounds) {
 
   // draw clip path
   const ctx = outCanvas.getContext("2d");
+
   ctx.beginPath();
   ctx.moveTo(0, 0);
   ctx.lineTo(bounds.w + buffer, 0);
@@ -32,7 +33,7 @@ export function drawTriangleCanvas(img, bounds) {
   return outCanvas;
 }
 
-export function drawSplitTriangleCanvas(img, triW, triH, bounds) {
+export function drawSplitTriangleCanvas(img, bounds) {
   const { x, y, w, h } = bounds;
 
   const halfCanvas = document.createElement("canvas");

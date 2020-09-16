@@ -7,12 +7,12 @@ import AnimatedKaleidoscope from "./kaleidoscopeCanvas/AnimatedKaleidoscope";
 const defaultSettings = {
   polyHeight: 500,
   numSegments: 6,
-  useSplitSegments: true,
+  useSplitSegments: false,
   xOffset: 681,
   yOffset: 90,
-  heightFrac: 1,
+  heightFrac: 0.5,
   xFrac: 0.5,
-  yFrac: 1,
+  yFrac: 0.5,
 };
 
 export default function App() {
