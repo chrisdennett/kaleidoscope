@@ -1,12 +1,13 @@
 import { drawSplitTriangleCanvas, drawTriangleCanvas } from "./drawTriangles";
 
 export const getTriangleData = (img, settings) => {
-  const { numSegments, heightFrac, xFrac, yFrac } = settings;
+  const { numSegments, heightFrac, xFrac, yFrac, useSplitSegments } = settings;
   const height = img.height * heightFrac;
   const halfSideLength = height * Math.tan(Math.PI / numSegments);
   const sideLength = halfSideLength * 2;
 
-  const maxX = img.width - sideLength;
+  let maxX = img.width - (useSplitSegments ? halfSideLength : sideLength);
+  maxX -= 2; // seems to be needed to avoid a white edge
   const maxY = img.height - height;
 
   const x1 = maxX * xFrac;
@@ -18,11 +19,17 @@ export const getTriangleData = (img, settings) => {
 
   return {
     height,
+    useSplitSegments,
     sideLength,
-    bounds: { x: x1, y: y1, w: sideLength, h: height },
+    bounds: {
+      x: x1,
+      y: y1,
+      w: useSplitSegments ? halfSideLength : sideLength,
+      h: height,
+    },
     points: [
       { x: x1, y: y1 },
-      { x: x2, y: y2 },
+      { x: useSplitSegments ? x2 - halfSideLength : x2, y: y2 },
       { x: x3, y: y3 },
     ],
   };
@@ -32,8 +39,8 @@ export const createTriangleCanvas = (img, useSplitSegments, triangleData) => {
   const { sideLength, height, bounds } = triangleData;
 
   const triCanvas = useSplitSegments
-    ? drawSplitTriangleCanvas(img, sideLength, height)
-    : drawTriangleCanvas(img, sideLength, height, bounds);
+    ? drawSplitTriangleCanvas(img, sideLength, height, bounds)
+    : drawTriangleCanvas(img, bounds);
 
   return triCanvas;
 };

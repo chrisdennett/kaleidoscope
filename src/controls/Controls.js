@@ -1,12 +1,15 @@
 import React from "react";
+import ImageInputSelector from "../components/ImageInputSelector";
 
-const Controls = ({ settings, setSettings }) => {
+const Controls = ({
+  settings,
+  setSettings,
+  srcImg,
+  setSrcImg,
+  setFrameNumber,
+}) => {
   const onControlUpdate = (key, newValue) => {
     setSettings({ ...settings, [key]: newValue });
-  };
-
-  const toggleTileMode = () => {
-    onControlUpdate("inTileMode", !settings.inTileMode);
   };
 
   const toggleUseSplitSegments = () => {
@@ -16,9 +19,12 @@ const Controls = ({ settings, setSettings }) => {
   return (
     <div>
       <div style={{ position: "fixed" }}>
-        <div>
-          <button onClick={toggleTileMode}>Toggle tile mode</button>
-        </div>
+        <ImageInputSelector
+          srcImg={srcImg}
+          setSrcImg={setSrcImg}
+          setFrameNumber={setFrameNumber}
+        />
+
         <div>
           <button onClick={toggleUseSplitSegments}>
             Toggle split segments
@@ -37,7 +43,7 @@ const Controls = ({ settings, setSettings }) => {
 
         <Slider
           label={"Height: "}
-          min={0.5}
+          min={0.2}
           max={1}
           step={0.01}
           propertyName={"heightFrac"}

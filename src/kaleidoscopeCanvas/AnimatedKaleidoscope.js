@@ -20,7 +20,7 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
     )
       return;
 
-    const { numSegments, useSplitSegments, heightFrac } = settings;
+    const { numSegments, useSplitSegments } = settings;
     const triangleData = getTriangleData(srcImg, settings);
     // source canvas showing orig image
     drawSrcCanvasToScreen(srcImg, srcCanvasRef.current, triangleData);
@@ -43,7 +43,6 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
 
   return (
     <div>
-      <h1>AnimatedKaleidoscope</h1>
       <canvas ref={srcCanvasRef} />
       <canvas ref={triCanvasRef} />
       <canvas ref={polyCanvasRef} />
@@ -67,6 +66,8 @@ const drawSrcCanvasToScreen = (srcImg, screenCanvas, triangleData) => {
   ctx.lineTo(points[1].x, points[1].y);
   ctx.lineTo(points[2].x, points[2].y);
   ctx.lineTo(points[0].x, points[0].y);
+  ctx.strokeStyle = "rgb(255,0,0)";
+  ctx.lineWidth = 4;
   ctx.stroke();
 };
 

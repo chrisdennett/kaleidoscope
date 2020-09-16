@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ImageInputSelector from "./components/ImageInputSelector";
 import Controls from "./controls/Controls";
 import { useDebounce } from "./hooks/useDebounce";
 import "./styles.css";
@@ -10,16 +9,15 @@ const defaultSettings = {
   polyHeight: 500,
   numSegments: 6,
   inTileMode: false,
-  useSplitSegments: false,
+  useSplitSegments: true,
   xOffset: 681,
   yOffset: 90,
   heightFrac: 0.5,
   xFrac: 0,
-  yFrac: 0,
+  yFrac: 0.1,
 };
 
 export default function App() {
-  // const [showControls, setShowControls] = useState(true);
   const [settings, setSettings] = useState(defaultSettings);
   const [frameNumber, setFrameNumber] = React.useState(0);
   const [srcImg, setSrcImg] = React.useState(null);
@@ -30,15 +28,12 @@ export default function App() {
 
   return (
     <div>
-      <ImageInputSelector
-        srcImg={srcImg}
+      <Controls
+        settings={settings}
+        setSettings={setSettings}
         setSrcImg={setSrcImg}
         setFrameNumber={setFrameNumber}
       />
-
-      {/* {showControls && ( */}
-      <Controls settings={settings} setSettings={setSettings} />
-      {/* )} */}
 
       {inTileMode && (
         <TiledKaleidoscopeCanvas

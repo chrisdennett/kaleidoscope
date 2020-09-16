@@ -1,73 +1,68 @@
-export function drawTriangleCanvas(img, triW, triH, bounds) {
+export function drawTriangleCanvas(img, bounds) {
   const outCanvas = document.createElement("canvas");
-  const halfTriWidth = triW / 2;
+  const halfTriWidth = bounds.w / 2;
 
   // added size buffer to avoid gaps between triangles
   const buffer = 2;
 
-  outCanvas.width = Math.ceil(triW + buffer);
-  outCanvas.height = triH;
+  outCanvas.width = Math.ceil(bounds.w + buffer);
+  outCanvas.height = bounds.h;
 
   // draw clip path
   const ctx = outCanvas.getContext("2d");
   ctx.beginPath();
   ctx.moveTo(0, 0);
-  ctx.lineTo(triW + buffer, 0);
-  ctx.lineTo(halfTriWidth + buffer, triH);
-  ctx.lineTo(halfTriWidth, triH);
+  ctx.lineTo(bounds.w + buffer, 0);
+  ctx.lineTo(halfTriWidth + buffer, bounds.h);
+  ctx.lineTo(halfTriWidth, bounds.h);
   ctx.clip();
 
-  const startX = bounds.x;
-  const startY = bounds.y;
-
-  // move image so centerX of webcam is in the centerX of triangle
-  // const imgX = (img.width - triW) / 2;
-
-  ctx.drawImage(img, startX, startY, triW, triH, 0, 0, triW, triH);
+  ctx.drawImage(
+    img,
+    bounds.x,
+    bounds.y,
+    bounds.w,
+    bounds.h,
+    0,
+    0,
+    bounds.w,
+    bounds.h
+  );
 
   return outCanvas;
 }
 
-export function drawSplitTriangleCanvas(img, triW, triH) {
+export function drawSplitTriangleCanvas(img, triW, triH, bounds) {
+  const { x, y, w, h } = bounds;
+
   const halfCanvas = document.createElement("canvas");
   const outCanvas = document.createElement("canvas");
 
   // added size buffer to avoid gaps between triangles
   const buffer = 2;
-  const halfTriWidth = triW / 2;
+  const doubleW = w * 2;
 
-  halfCanvas.width = Math.ceil(halfTriWidth + buffer);
-  halfCanvas.height = triH;
-  outCanvas.width = Math.ceil(triW + buffer);
-  outCanvas.height = triH;
+  halfCanvas.width = Math.ceil(w + buffer);
+  halfCanvas.height = h;
+  outCanvas.width = Math.ceil(doubleW + buffer);
+  outCanvas.height = h;
 
   const ctx = halfCanvas.getContext("2d");
   ctx.beginPath();
   ctx.save();
   ctx.moveTo(0, 0);
-  ctx.lineTo(halfTriWidth + buffer, 0);
-  ctx.lineTo(halfTriWidth + buffer, triH);
-  ctx.lineTo(halfTriWidth, triH);
+  ctx.lineTo(w + buffer, 0);
+  ctx.lineTo(w + buffer, h);
+  ctx.lineTo(w, h);
   ctx.clip();
-  // move image so centerX of webcam is in the centerX of triangle
-  const imgX = (img.width - triW) / 2;
-  ctx.drawImage(
-    img,
-    imgX,
-    0,
-    img.width,
-    img.height,
-    0,
-    0,
-    img.width,
-    img.height
-  );
+
+  ctx.drawImage(img, x, y, img.width, img.height, 0, 0, img.width, img.height);
   ctx.restore();
 
   const outCtx = outCanvas.getContext("2d");
   outCtx.drawImage(halfCanvas, 0, 0);
   outCtx.scale(-1, 1);
-  outCtx.drawImage(halfCanvas, -(triW + buffer), 0);
+  outCtx.drawImage(halfCanvas, -(doubleW + buffer), 0);
 
   return outCanvas;
 }
