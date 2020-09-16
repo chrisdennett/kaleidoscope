@@ -31,7 +31,7 @@ const Controls = ({
           </button>
         </div>
 
-        <Slider
+        {/* <Slider
           label={"Sides: "}
           min={6}
           max={50}
@@ -39,7 +39,7 @@ const Controls = ({
           propertyName={"numSegments"}
           setSettings={setSettings}
           settings={settings}
-        />
+        /> */}
 
         <Slider
           label={"Height: "}

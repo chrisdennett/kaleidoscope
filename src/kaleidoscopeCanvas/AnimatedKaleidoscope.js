@@ -79,6 +79,7 @@ const Holder = styled.div`
   justify-content: center;
   width: 100vw;
   max-height: 300px;
+  margin-bottom: 10px;
 `;
 
 const TiledCanvasHolder = styled.div`

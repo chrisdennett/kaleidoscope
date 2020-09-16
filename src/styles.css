@@ -1,9 +1,11 @@
 html {
-  background: whitesmoke;
+  background: rgba(0, 0, 0, 0.9);
 }
 
 body {
   margin: 0;
-  /* overflow: hidden; */
+  min-height: 100%;
+  padding-top: 10px;
+  color: whitesmoke;
   overflow-x: hidden;
 }

@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { drawTiledHexagonCanvas } from "../functions/drawTiledHexagons";
+import useWindowSize from "../hooks/useWindowResize";
 
 const TiledKaleidoscopeCanvas = ({ kaleidCanvas, frameNumber, settings }) => {
   const canvasRef = React.useRef(null);
+  const size = useWindowSize();
 
   useEffect(() => {
     if (!canvasRef || !canvasRef.current || !kaleidCanvas) return;
 
-    const canvasHeight = kaleidCanvas.height * 2;
+    const canvasHeight = window.innerHeight + 10; //kaleidCanvas.height * 2;
 
     const screenCanvas = canvasRef.current;
     screenCanvas.width = window.innerWidth;
@@ -36,7 +38,7 @@ const TiledKaleidoscopeCanvas = ({ kaleidCanvas, frameNumber, settings }) => {
     }
 
     // eslint-disable-next-line
-  }, [kaleidCanvas, frameNumber]);
+  }, [kaleidCanvas, frameNumber, size]);
 
   return <canvas ref={canvasRef} style={{ display: "block" }} />;
 };
