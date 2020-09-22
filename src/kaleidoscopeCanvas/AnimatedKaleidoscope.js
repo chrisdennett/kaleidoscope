@@ -35,16 +35,16 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
     );
     drawTriangleCanvasToScreen(triCanvas, triCanvasRef.current, triangleData);
     // full polygon canvas
-    const polyCanvas = drawPolygonCanvas(
-      triCanvas,
-      triangleData.height,
-      triangleData.sideLength,
-      numSegments
-    );
+    const polyCanvas = drawPolygonCanvas(triCanvas, numSegments);
 
     setKaleidCanvas(polyCanvas);
 
-    drawPolyCanvasToScreen(polyCanvas, polyCanvasRef.current, triangleData);
+    drawPolyCanvasToScreen(
+      polyCanvas,
+      polyCanvasRef.current,
+      triangleData,
+      triCanvas
+    );
   }, [srcImg, frameNumber, settings]);
 
   return (
@@ -129,7 +129,7 @@ const drawTriangleCanvasToScreen = (triCanvas, screenCanvas, triangleData) => {
   const ctx = screenCanvas.getContext("2d");
   ctx.drawImage(triCanvas, 0, 0);
 
-  const offset = 4;
+  const offset = 2;
   const rightX = triangleData.useSplitSegments
     ? triCanvas.width / 2 - offset
     : triCanvas.width - offset;
@@ -140,30 +140,37 @@ const drawTriangleCanvasToScreen = (triCanvas, screenCanvas, triangleData) => {
   ctx.lineTo(triCanvas.width / 2, triCanvas.height - offset);
   ctx.closePath();
   ctx.lineJoin = "round";
-  ctx.lineWidth = 8;
+  ctx.lineWidth = 4;
   ctx.strokeStyle = "red";
   ctx.stroke();
 };
 
-const drawPolyCanvasToScreen = (polyCanvas, screenCanvas, triangleData) => {
+const drawPolyCanvasToScreen = (
+  polyCanvas,
+  screenCanvas,
+  triangleData,
+  triCanvas
+) => {
   screenCanvas.width = polyCanvas.width;
   screenCanvas.height = polyCanvas.height;
 
   const ctx = screenCanvas.getContext("2d");
   ctx.drawImage(polyCanvas, 0, 0);
 
-  const { sideLength, height, useSplitSegments } = triangleData;
-  const halfSideLength = sideLength / 2;
+  const { useSplitSegments } = triangleData;
+  const halfSideLength = triCanvas.width / 2;
 
-  const rightX = useSplitSegments ? sideLength : halfSideLength + sideLength;
+  const rightX = useSplitSegments
+    ? triCanvas.width
+    : halfSideLength + triCanvas.width;
 
-  const offset = 9;
+  const offset = 2;
   ctx.beginPath();
   ctx.moveTo(halfSideLength, offset);
   ctx.lineTo(rightX, offset);
-  ctx.lineTo(sideLength, height);
+  ctx.lineTo(triCanvas.width, triCanvas.height);
   ctx.closePath();
-  ctx.lineWidth = 18;
+  ctx.lineWidth = 4;
   ctx.lineJoin = "round";
   ctx.strokeStyle = "red";
   ctx.stroke();

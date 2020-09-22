@@ -60,12 +60,7 @@ export const createTriangleCanvas = (img, useSplitSegments, triangleData) => {
   return triCanvas;
 };
 
-export function drawPolygonCanvas(
-  triCanvas,
-  segHeight,
-  sideLength,
-  numSegments
-) {
+export function drawPolygonCanvas(triCanvas, numSegments) {
   const outCanvas = document.createElement("canvas");
 
   const triH = triCanvas.height;
