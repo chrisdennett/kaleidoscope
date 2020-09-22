@@ -52,7 +52,7 @@ const Controls = ({
           </ControlHolder>
 
           <Slider
-            label={"Size: "}
+            label={"IN Size: "}
             min={0.1}
             max={1}
             step={0.01}
@@ -77,6 +77,16 @@ const Controls = ({
             max={1}
             step={0.01}
             propertyName={"yFrac"}
+            setSettings={setSettings}
+            settings={settings}
+          />
+
+          <Slider
+            label={"OUT Size: "}
+            min={0.1}
+            max={1}
+            step={0.01}
+            propertyName={"outHeightFrac"}
             setSettings={setSettings}
             settings={settings}
           />

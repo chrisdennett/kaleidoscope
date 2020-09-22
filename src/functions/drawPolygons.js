@@ -1,7 +1,14 @@
 import { drawSplitTriangleCanvas, drawTriangleCanvas } from "./drawTriangles";
 
 export const getTriangleData = (img, settings) => {
-  const { numSegments, heightFrac, xFrac, yFrac, useSplitSegments } = settings;
+  const {
+    numSegments,
+    heightFrac,
+    outHeightFrac,
+    xFrac,
+    yFrac,
+    useSplitSegments,
+  } = settings;
   const height = img.height * heightFrac;
   const halfSideLength = height * Math.tan(Math.PI / numSegments);
   const sideLength = halfSideLength * 2;
@@ -19,6 +26,7 @@ export const getTriangleData = (img, settings) => {
 
   return {
     height: restrictNumber(height, 10, img.height),
+    outHeightFrac,
     useSplitSegments,
     sideLength: restrictNumber(sideLength, 10, img.width),
     bounds: {
@@ -42,8 +50,12 @@ export const getTriangleData = (img, settings) => {
 
 export const createTriangleCanvas = (img, useSplitSegments, triangleData) => {
   const triCanvas = useSplitSegments
-    ? drawSplitTriangleCanvas(img, triangleData.bounds)
-    : drawTriangleCanvas(img, triangleData.bounds);
+    ? drawSplitTriangleCanvas(
+        img,
+        triangleData.bounds,
+        triangleData.outHeightFrac
+      )
+    : drawTriangleCanvas(img, triangleData.bounds, triangleData.outHeightFrac);
 
   return triCanvas;
 };
@@ -56,21 +68,22 @@ export function drawPolygonCanvas(
 ) {
   const outCanvas = document.createElement("canvas");
 
+  const triH = triCanvas.height;
+  const triW = triCanvas.width;
+
   const angle = 360 / numSegments;
-  const halfSideLength = sideLength / 2;
+  const halfSideLength = triW / 2;
 
   const ctx = outCanvas.getContext("2d");
   // if half number of segments is an odd number the pointy bits
   // will stick out the sides so need to offset by the long triangle edge
   // otherwise offset by short triangle edge
-  const spokeLength = Math.sqrt(
-    segHeight * segHeight + halfSideLength * halfSideLength
-  );
-  const halfWidth = (numSegments / 2) % 2 === 0 ? segHeight : spokeLength;
+  const spokeLength = Math.sqrt(triH * triH + halfSideLength * halfSideLength);
+  const halfWidth = (numSegments / 2) % 2 === 0 ? triH : spokeLength;
   const width = halfWidth * 2;
 
   outCanvas.width = width;
-  outCanvas.height = segHeight * 2;
+  outCanvas.height = triH * 2;
 
   for (let s = 0; s < numSegments; s++) {
     const isFlipped = s % 2 !== 0;

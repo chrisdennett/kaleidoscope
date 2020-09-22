@@ -1,15 +1,16 @@
-export function drawTriangleCanvas(img, bounds) {
-  const outCanvas = document.createElement("canvas");
+export function drawTriangleCanvas(img, bounds, outHeightFrac) {
+  const triCanvas = document.createElement("canvas");
+
   const halfTriWidth = bounds.w / 2;
 
   // added size buffer to avoid gaps between triangles
   const buffer = 2;
 
-  outCanvas.width = Math.ceil(bounds.w + buffer);
-  outCanvas.height = bounds.h;
+  triCanvas.width = Math.ceil(bounds.w + buffer);
+  triCanvas.height = bounds.h;
 
   // draw clip path
-  const ctx = outCanvas.getContext("2d");
+  const ctx = triCanvas.getContext("2d");
 
   ctx.beginPath();
   ctx.moveTo(0, 0);
@@ -30,13 +31,33 @@ export function drawTriangleCanvas(img, bounds) {
     bounds.h
   );
 
+  const outCanvas = document.createElement("canvas");
+  const outCtx = outCanvas.getContext("2d");
+  const outWidth = triCanvas.width * outHeightFrac;
+  const outHeight = triCanvas.height * outHeightFrac;
+
+  outCanvas.width = outWidth;
+  outCanvas.height = outHeight;
+  outCtx.drawImage(
+    triCanvas,
+    0,
+    0,
+    triCanvas.width,
+    triCanvas.height,
+    0,
+    0,
+    outWidth,
+    outHeight
+  );
+
   return outCanvas;
 }
 
-export function drawSplitTriangleCanvas(img, bounds) {
+export function drawSplitTriangleCanvas(img, bounds, outHeightFrac) {
   const { x, y, w, h } = bounds;
 
   const halfCanvas = document.createElement("canvas");
+  const doubleCanvas = document.createElement("canvas");
   const outCanvas = document.createElement("canvas");
 
   // added size buffer to avoid gaps between triangles
@@ -45,8 +66,8 @@ export function drawSplitTriangleCanvas(img, bounds) {
 
   halfCanvas.width = Math.ceil(w + buffer);
   halfCanvas.height = h;
-  outCanvas.width = Math.ceil(doubleW + buffer);
-  outCanvas.height = h;
+  doubleCanvas.width = Math.ceil(doubleW + buffer);
+  doubleCanvas.height = h;
 
   const ctx = halfCanvas.getContext("2d");
   ctx.beginPath();
@@ -60,10 +81,28 @@ export function drawSplitTriangleCanvas(img, bounds) {
   ctx.drawImage(img, x, y, img.width, img.height, 0, 0, img.width, img.height);
   ctx.restore();
 
+  const doubledCtx = doubleCanvas.getContext("2d");
+  doubledCtx.drawImage(halfCanvas, 0, 0);
+  doubledCtx.scale(-1, 1);
+  doubledCtx.drawImage(halfCanvas, -(doubleW + buffer), 0);
+
   const outCtx = outCanvas.getContext("2d");
-  outCtx.drawImage(halfCanvas, 0, 0);
-  outCtx.scale(-1, 1);
-  outCtx.drawImage(halfCanvas, -(doubleW + buffer), 0);
+  const outWidth = doubleCanvas.width * outHeightFrac;
+  const outHeight = doubleCanvas.height * outHeightFrac;
+
+  outCanvas.width = outWidth;
+  outCanvas.height = outHeight;
+  outCtx.drawImage(
+    doubleCanvas,
+    0,
+    0,
+    doubleCanvas.width,
+    doubleCanvas.height,
+    0,
+    0,
+    outWidth,
+    outHeight
+  );
 
   return outCanvas;
 }
