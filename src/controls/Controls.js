@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { TiWarningOutline } from "react-icons/ti";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import ImageInputSelector from "../components/ImageInputSelector";
 
-const limitDecimals = (num, totDecimals) => {
-  const numAsNum = parseFloat(num);
-  return (
-    Math.round(numAsNum * Math.pow(10, totDecimals)) / Math.pow(10, totDecimals)
-  );
-};
+const incX = 0.0005;
+const incY = 0.0007;
 
 const Controls = ({
   settings,
@@ -17,25 +14,29 @@ const Controls = ({
   setSrcImg,
   setFrameNumber,
 }) => {
-  const [increment, setIncrement] = useState(0.0005);
+  // const [animAxis, setAnimAxis] = useState("x");
+  // const [animTargetFrac, setAnimTargetFrac] = useState({ targX: 1, targY: 1 });
+  const [xIncrement, setXIncrement] = useState(incX);
+  const [yIncrement, setYIncrement] = useState(incY);
   const [settingsShowing, setSettingsShowing] = React.useState(true);
 
   useAnimationFrame(() => {
     if (!settings.isAnimating) return;
 
-    const { xFrac } = settings;
+    const { xFrac, yFrac } = settings;
+
+    if (xFrac >= 1) setXIncrement(-incX);
+    if (xFrac <= 0) setXIncrement(incX);
+    if (yFrac >= 1) setYIncrement(-incY);
+    if (yFrac <= 0) setYIncrement(incY);
 
     setSettings((prev) => {
-      return { ...prev, xFrac: limitDecimals(prev.xFrac + increment, 4) };
+      return {
+        ...prev,
+        xFrac: limitDecimals(prev.xFrac + xIncrement, 4),
+        yFrac: limitDecimals(prev.yFrac + yIncrement, 4),
+      };
     });
-
-    if (increment > 0 && xFrac >= 1) {
-      setIncrement(-increment);
-    }
-
-    if (increment < 0 && xFrac <= 0) {
-      setIncrement(-increment);
-    }
   });
 
   const onControlUpdate = (key, newValue) => {
@@ -127,6 +128,11 @@ const Controls = ({
             <ToggleButton onClick={toggleIsAnimating}>
               {settings.isAnimating ? "TURN OFF" : "TURN ON"}
             </ToggleButton>
+            <div>
+              <small>
+                <TiWarningOutline /> Can cause flashing images!
+              </small>
+            </div>
           </ControlHolder>
         </SettingsControls>
       </Inner>
@@ -216,4 +222,15 @@ const ControlHolder = styled.div`
   margin: 8px 0;
   text-transform: uppercase;
   font-family: "Courier New", Courier, monospace;
+
+  small {
+    color: red;
+  }
 `;
+
+const limitDecimals = (num, totDecimals) => {
+  const numAsNum = parseFloat(num);
+  return (
+    Math.round(numAsNum * Math.pow(10, totDecimals)) / Math.pow(10, totDecimals)
+  );
+};
