@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { TiWarningOutline } from "react-icons/ti";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
@@ -14,12 +14,17 @@ const Controls = ({
   setSrcImg,
   setFrameNumber,
 }) => {
+  const [frameCount, setFrameCount] = useState(0);
   const [xIncrement, setXIncrement] = useState(incX);
   const [yIncrement, setYIncrement] = useState(incY);
   const [settingsShowing, setSettingsShowing] = React.useState(true);
 
   useAnimationFrame(() => {
-    if (!settings.isAnimating) return;
+    setFrameCount((prev) => prev + 1);
+  });
+
+  useEffect(() => {
+    if (settings.isAnimating === false) return;
 
     const { xFrac, yFrac } = settings;
 
@@ -35,10 +40,15 @@ const Controls = ({
         yFrac: limitDecimals(prev.yFrac + yIncrement, 4),
       };
     });
-  });
+
+    // eslint-disable-next-line
+  }, [frameCount]);
 
   const onControlUpdate = (key, newValue) => {
-    setSettings({ ...settings, [key]: newValue });
+    setSettings((prev) => {
+      console.log("prev.isAnimating: ", prev.isAnimating);
+      return { ...prev, [key]: newValue };
+    });
   };
 
   const toggleUseSplitSegments = () => {
@@ -46,7 +56,9 @@ const Controls = ({
   };
 
   const toggleIsAnimating = () => {
-    onControlUpdate("isAnimating", !settings.isAnimating);
+    setSettings((prev) => {
+      return { ...prev, isAnimating: prev.isAnimating === true ? false : true };
+    });
   };
 
   const onShowSettingsClick = () => setSettingsShowing(true);

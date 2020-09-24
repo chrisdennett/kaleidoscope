@@ -13,6 +13,7 @@ const defaultSettings = {
   yOffset: 90,
   heightFrac: 0.5,
   outHeightFrac: 0.25,
+  isAnimating: false,
   xFrac: 0.5,
   yFrac: 0.5,
 };
