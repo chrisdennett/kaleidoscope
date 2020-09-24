@@ -116,9 +116,10 @@ const drawSrcCanvasToScreen = (srcImg, screenCanvas, triangleData) => {
   ctx.lineTo(points[1].x, points[1].y);
   ctx.lineTo(points[2].x, points[2].y);
   ctx.lineTo(points[0].x, points[0].y);
-  ctx.strokeStyle = "rgb(255,0,0)";
   ctx.lineJoin = "round";
+  ctx.lineCap = "round";
   ctx.lineWidth = 16;
+  ctx.strokeStyle = "yellow";
   ctx.stroke();
 };
 
@@ -140,6 +141,7 @@ const drawTriangleCanvasToScreen = (triCanvas, screenCanvas, triangleData) => {
   ctx.lineTo(triCanvas.width / 2, triCanvas.height - offset);
   ctx.closePath();
   ctx.lineJoin = "round";
+  ctx.lineCap = "round";
   ctx.lineWidth = 4;
   ctx.strokeStyle = "red";
   ctx.stroke();
@@ -172,6 +174,7 @@ const drawPolyCanvasToScreen = (
   ctx.closePath();
   ctx.lineWidth = 4;
   ctx.lineJoin = "round";
+  ctx.lineCap = "round";
   ctx.strokeStyle = "red";
   ctx.stroke();
 };

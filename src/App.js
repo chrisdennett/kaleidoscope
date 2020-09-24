@@ -11,7 +11,7 @@ const defaultSettings = {
   useSplitSegments: true,
   xOffset: 681,
   yOffset: 90,
-  heightFrac: 1,
+  heightFrac: 0.5,
   outHeightFrac: 0.25,
   xFrac: 0.5,
   yFrac: 0.5,

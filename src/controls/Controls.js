@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import ImageInputSelector from "../components/ImageInputSelector";
+
+const limitDecimals = (num, totDecimals) => {
+  const numAsNum = parseFloat(num);
+  return (
+    Math.round(numAsNum * Math.pow(10, totDecimals)) / Math.pow(10, totDecimals)
+  );
+};
 
 const Controls = ({
   settings,
@@ -9,7 +17,26 @@ const Controls = ({
   setSrcImg,
   setFrameNumber,
 }) => {
+  const [increment, setIncrement] = useState(0.0005);
   const [settingsShowing, setSettingsShowing] = React.useState(true);
+
+  useAnimationFrame(() => {
+    if (!settings.isAnimating) return;
+
+    const { xFrac } = settings;
+
+    setSettings((prev) => {
+      return { ...prev, xFrac: limitDecimals(prev.xFrac + increment, 4) };
+    });
+
+    if (increment > 0 && xFrac >= 1) {
+      setIncrement(-increment);
+    }
+
+    if (increment < 0 && xFrac <= 0) {
+      setIncrement(-increment);
+    }
+  });
 
   const onControlUpdate = (key, newValue) => {
     setSettings({ ...settings, [key]: newValue });
@@ -17,6 +44,10 @@ const Controls = ({
 
   const toggleUseSplitSegments = () => {
     onControlUpdate("useSplitSegments", !settings.useSplitSegments);
+  };
+
+  const toggleIsAnimating = () => {
+    onControlUpdate("isAnimating", !settings.isAnimating);
   };
 
   const onShowSettingsClick = () => setSettingsShowing(true);
@@ -90,6 +121,13 @@ const Controls = ({
             setSettings={setSettings}
             settings={settings}
           />
+
+          <ControlHolder>
+            <span>Animation: </span>
+            <ToggleButton onClick={toggleIsAnimating}>
+              {settings.isAnimating ? "TURN OFF" : "TURN ON"}
+            </ToggleButton>
+          </ControlHolder>
         </SettingsControls>
       </Inner>
     </div>
