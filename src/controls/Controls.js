@@ -14,8 +14,6 @@ const Controls = ({
   setSrcImg,
   setFrameNumber,
 }) => {
-  // const [animAxis, setAnimAxis] = useState("x");
-  // const [animTargetFrac, setAnimTargetFrac] = useState({ targX: 1, targY: 1 });
   const [xIncrement, setXIncrement] = useState(incX);
   const [yIncrement, setYIncrement] = useState(incY);
   const [settingsShowing, setSettingsShowing] = React.useState(true);
