@@ -7,7 +7,7 @@ export const getTriangleData = (img, settings) => {
     outHeightFrac,
     xFrac,
     yFrac,
-    useSplitSegments,
+    useSplitSegments
   } = settings;
   const height = img.height * heightFrac;
   const halfSideLength = height * Math.tan(Math.PI / numSegments);
@@ -33,7 +33,7 @@ export const getTriangleData = (img, settings) => {
       x: restrictNumber(x1),
       y: restrictNumber(y1),
       w: restrictNumber(useSplitSegments ? halfSideLength : sideLength),
-      h: restrictNumber(height),
+      h: restrictNumber(height)
     },
     points: [
       { x: restrictNumber(x1), y: restrictNumber(y1) },
@@ -41,21 +41,32 @@ export const getTriangleData = (img, settings) => {
         x: useSplitSegments
           ? restrictNumber(x2 - halfSideLength)
           : restrictNumber(x2),
-        y: restrictNumber(y2),
+        y: restrictNumber(y2)
       },
-      { x: restrictNumber(x3), y: restrictNumber(y3) },
-    ],
+      { x: restrictNumber(x3), y: restrictNumber(y3) }
+    ]
   };
 };
 
-export const createTriangleCanvas = (img, useSplitSegments, triangleData) => {
+export const createTriangleCanvas = (
+  img,
+  useSplitSegments,
+  triangleData,
+  rotation
+) => {
   const triCanvas = useSplitSegments
     ? drawSplitTriangleCanvas(
         img,
         triangleData.bounds,
-        triangleData.outHeightFrac
+        triangleData.outHeightFrac,
+        rotation
       )
-    : drawTriangleCanvas(img, triangleData.bounds, triangleData.outHeightFrac);
+    : drawTriangleCanvas(
+        img,
+        triangleData.bounds,
+        triangleData.outHeightFrac,
+        rotation
+      );
 
   return triCanvas;
 };

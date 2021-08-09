@@ -1,5 +1,14 @@
-export function drawTriangleCanvas(img, bounds, outHeightFrac) {
+export function drawTriangleCanvas(img, bounds, outHeightFrac, rotation) {
   const triCanvas = document.createElement("canvas");
+
+  const rotatedCanvas = document.createElement("canvas");
+  rotatedCanvas.width = img.width;
+  rotatedCanvas.height = img.height;
+  const rotCtx = rotatedCanvas.getContext("2d");
+  rotCtx.translate(bounds.x, bounds.y);
+  rotCtx.rotate((rotation * Math.PI) / 180);
+  rotCtx.translate(-bounds.x, -bounds.y);
+  rotCtx.drawImage(img, 0, 0);
 
   const halfTriWidth = bounds.w / 2;
 
@@ -20,7 +29,7 @@ export function drawTriangleCanvas(img, bounds, outHeightFrac) {
   ctx.clip();
 
   ctx.drawImage(
-    img,
+    rotatedCanvas,
     bounds.x,
     bounds.y,
     bounds.w,
@@ -53,8 +62,17 @@ export function drawTriangleCanvas(img, bounds, outHeightFrac) {
   return outCanvas;
 }
 
-export function drawSplitTriangleCanvas(img, bounds, outHeightFrac) {
+export function drawSplitTriangleCanvas(img, bounds, outHeightFrac, rotation) {
   const { x, y, w, h } = bounds;
+
+  const rotatedCanvas = document.createElement("canvas");
+  rotatedCanvas.width = img.width;
+  rotatedCanvas.height = img.height;
+  const rotCtx = rotatedCanvas.getContext("2d");
+  rotCtx.translate(bounds.x, bounds.y);
+  rotCtx.rotate((rotation * Math.PI) / 180);
+  rotCtx.translate(-bounds.x, -bounds.y);
+  rotCtx.drawImage(img, 0, 0);
 
   const halfCanvas = document.createElement("canvas");
   const doubleCanvas = document.createElement("canvas");
@@ -78,7 +96,17 @@ export function drawSplitTriangleCanvas(img, bounds, outHeightFrac) {
   ctx.lineTo(w, h);
   ctx.clip();
 
-  ctx.drawImage(img, x, y, img.width, img.height, 0, 0, img.width, img.height);
+  ctx.drawImage(
+    rotatedCanvas,
+    x,
+    y,
+    img.width,
+    img.height,
+    0,
+    0,
+    img.width,
+    img.height
+  );
   ctx.restore();
 
   const doubledCtx = doubleCanvas.getContext("2d");

@@ -4,7 +4,7 @@ import TiledKaleidoscopeCanvas from "../kaleidoscopeCanvas/TiledKaleidoscopeCanv
 import {
   createTriangleCanvas,
   drawPolygonCanvas,
-  getTriangleData,
+  getTriangleData
 } from "../functions/drawPolygons";
 
 const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
@@ -26,12 +26,18 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
     const { numSegments, useSplitSegments } = settings;
     const triangleData = getTriangleData(srcImg, settings);
 
-    drawSrcCanvasToScreen(srcImg, srcCanvasRef.current, triangleData);
+    drawSrcCanvasToScreen(
+      srcImg,
+      srcCanvasRef.current,
+      triangleData,
+      settings.rotation
+    );
     // triangle canvas showing just the triangle
     const triCanvas = createTriangleCanvas(
       srcImg,
       useSplitSegments,
-      triangleData
+      triangleData,
+      settings.rotation
     );
     drawTriangleCanvasToScreen(triCanvas, triCanvasRef.current, triangleData);
     // full polygon canvas
@@ -43,7 +49,8 @@ const AnimatedKaleidoscope = ({ srcImg, frameNumber, settings }) => {
       polyCanvas,
       polyCanvasRef.current,
       triangleData,
-      triCanvas
+      triCanvas,
+      settings.rotation
     );
   }, [srcImg, frameNumber, settings]);
 
@@ -102,7 +109,12 @@ const CanvasHolder = styled.div`
   }
 `;
 
-const drawSrcCanvasToScreen = (srcImg, screenCanvas, triangleData) => {
+const drawSrcCanvasToScreen = (
+  srcImg,
+  screenCanvas,
+  triangleData,
+  rotation
+) => {
   screenCanvas.width = srcImg.width;
   screenCanvas.height = srcImg.height;
 
@@ -111,7 +123,13 @@ const drawSrcCanvasToScreen = (srcImg, screenCanvas, triangleData) => {
 
   // draw triangle
   const { points } = triangleData;
+
   ctx.beginPath();
+
+  ctx.translate(points[0].x, points[0].y);
+  ctx.rotate((-rotation * Math.PI) / 180);
+  ctx.translate(-points[0].x, -points[0].y);
+
   ctx.moveTo(points[0].x, points[0].y);
   ctx.lineTo(points[1].x, points[1].y);
   ctx.lineTo(points[2].x, points[2].y);
@@ -120,6 +138,7 @@ const drawSrcCanvasToScreen = (srcImg, screenCanvas, triangleData) => {
   ctx.lineCap = "round";
   ctx.lineWidth = 16;
   ctx.strokeStyle = "yellow";
+
   ctx.stroke();
 };
 
@@ -151,7 +170,8 @@ const drawPolyCanvasToScreen = (
   polyCanvas,
   screenCanvas,
   triangleData,
-  triCanvas
+  triCanvas,
+  rotation
 ) => {
   screenCanvas.width = polyCanvas.width;
   screenCanvas.height = polyCanvas.height;
@@ -167,6 +187,7 @@ const drawPolyCanvasToScreen = (
     : halfSideLength + triCanvas.width;
 
   const offset = 2;
+
   ctx.beginPath();
   ctx.moveTo(halfSideLength, offset);
   ctx.lineTo(rightX, offset);
@@ -176,5 +197,6 @@ const drawPolyCanvasToScreen = (
   ctx.lineJoin = "round";
   ctx.lineCap = "round";
   ctx.strokeStyle = "red";
+
   ctx.stroke();
 };

@@ -12,7 +12,7 @@ const Controls = ({
   setSettings,
   srcImg,
   setSrcImg,
-  setFrameNumber,
+  setFrameNumber
 }) => {
   const [frameCount, setFrameCount] = useState(0);
   const [xIncrement, setXIncrement] = useState(incX);
@@ -26,18 +26,35 @@ const Controls = ({
   useEffect(() => {
     if (settings.isAnimating === false) return;
 
+    const animateRotation = true;
+
     const { xFrac, yFrac } = settings;
 
-    if (xFrac >= 1) setXIncrement(-incX);
-    if (xFrac <= 0) setXIncrement(incX);
-    if (yFrac >= 1) setYIncrement(-incY);
-    if (yFrac <= 0) setYIncrement(incY);
+    if (!animateRotation) {
+      if (xFrac >= 1) setXIncrement(-incX);
+      if (xFrac <= 0) setXIncrement(incX);
+      if (yFrac >= 1) setYIncrement(-incY);
+      if (yFrac <= 0) setYIncrement(incY);
+    }
 
     setSettings((prev) => {
+      let newRotation = prev.rotation;
+      let newXFrac = xFrac;
+      let newYFrac = yFrac;
+
+      if (animateRotation) {
+        newRotation = prev.rotation + 1;
+        if (newRotation >= 359) newRotation = 0;
+      } else {
+        newXFrac = limitDecimals(prev.xFrac + xIncrement, 4);
+        newYFrac = limitDecimals(prev.yFrac + yIncrement, 4);
+      }
+
       return {
         ...prev,
-        xFrac: limitDecimals(prev.xFrac + xIncrement, 4),
-        yFrac: limitDecimals(prev.yFrac + yIncrement, 4),
+        xFrac: newXFrac,
+        yFrac: newYFrac,
+        rotation: newRotation
       };
     });
 
@@ -99,6 +116,16 @@ const Controls = ({
             max={1}
             step={0.01}
             propertyName={"heightFrac"}
+            setSettings={setSettings}
+            settings={settings}
+          />
+
+          <Slider
+            label={"Rotation: "}
+            min={0}
+            max={360}
+            step={1}
+            propertyName={"rotation"}
             setSettings={setSettings}
             settings={settings}
           />
@@ -200,7 +227,7 @@ const Slider = ({
   propertyName,
   label,
   setSettings,
-  settings,
+  settings
 }) => {
   const value = settings[propertyName];
 

@@ -8,14 +8,15 @@ import styled from "styled-components";
 const defaultSettings = {
   polyHeight: 500,
   numSegments: 6,
-  useSplitSegments: true,
+  useSplitSegments: false,
   xOffset: 681,
   yOffset: 90,
   heightFrac: 0.5,
   outHeightFrac: 0.25,
   isAnimating: false,
   xFrac: 0.5,
-  yFrac: 0.5,
+  yFrac: 1,
+  rotation: 0
 };
 
 export default function App() {
