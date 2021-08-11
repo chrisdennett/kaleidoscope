@@ -11,12 +11,13 @@ const defaultSettings = {
   useSplitSegments: false,
   xOffset: 681,
   yOffset: 90,
-  heightFrac: 0.5,
-  outHeightFrac: 0.25,
+  heightFrac: 0.4,
+  outHeightFrac: 0.36,
   isAnimating: false,
-  xFrac: 0.5,
-  yFrac: 1,
-  rotation: 0
+  xFrac: 0.64,
+  yFrac: 0.86,
+  rotation: 0,
+  rotationSpeed: 0.05
 };
 
 export default function App() {

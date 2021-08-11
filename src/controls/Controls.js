@@ -38,12 +38,14 @@ const Controls = ({
     }
 
     setSettings((prev) => {
-      let newRotation = prev.rotation;
+      let newRotation = parseFloat(prev.rotation).toFixed(2);
       let newXFrac = xFrac;
       let newYFrac = yFrac;
 
       if (animateRotation) {
-        newRotation = prev.rotation + 1;
+        newRotation = (
+          parseFloat(prev.rotation) + settings.rotationSpeed
+        ).toFixed(2);
         if (newRotation >= 359) newRotation = 0;
       } else {
         newXFrac = limitDecimals(prev.xFrac + xIncrement, 4);
@@ -63,7 +65,6 @@ const Controls = ({
 
   const onControlUpdate = (key, newValue) => {
     setSettings((prev) => {
-      console.log("prev.isAnimating: ", prev.isAnimating);
       return { ...prev, [key]: newValue };
     });
   };
@@ -121,6 +122,16 @@ const Controls = ({
           />
 
           <Slider
+            label={"OUT Size: "}
+            min={0.1}
+            max={1}
+            step={0.01}
+            propertyName={"outHeightFrac"}
+            setSettings={setSettings}
+            settings={settings}
+          />
+
+          <Slider
             label={"Rotation: "}
             min={0}
             max={360}
@@ -150,16 +161,6 @@ const Controls = ({
             settings={settings}
           />
 
-          <Slider
-            label={"OUT Size: "}
-            min={0.1}
-            max={1}
-            step={0.01}
-            propertyName={"outHeightFrac"}
-            setSettings={setSettings}
-            settings={settings}
-          />
-
           <ControlHolder>
             <span>Animation: </span>
             <ToggleButton onClick={toggleIsAnimating}>
@@ -171,6 +172,16 @@ const Controls = ({
               </small>
             </div>
           </ControlHolder>
+
+          <Slider
+            label={"Rotation Speed: "}
+            min={0.01}
+            max={5}
+            step={0.01}
+            propertyName={"rotationSpeed"}
+            setSettings={setSettings}
+            settings={settings}
+          />
         </SettingsControls>
       </Inner>
     </div>
@@ -210,6 +221,7 @@ const Inner = styled.div`
   color: black;
   display: flex;
   flex-direction: column;
+  width: 330px;
 `;
 
 const ToggleButton = styled.button`
@@ -232,7 +244,7 @@ const Slider = ({
   const value = settings[propertyName];
 
   const onSliderChange = (e) => {
-    setSettings({ ...settings, [propertyName]: e.target.value });
+    setSettings({ ...settings, [propertyName]: parseFloat(e.target.value) });
   };
 
   return (
