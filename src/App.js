@@ -46,5 +46,5 @@ export default function App() {
 }
 
 const AppHolder = styled.div`
-  margin-top: 40px;
+  /* margin-top: 40px; */
 `;
